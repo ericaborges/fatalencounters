@@ -1,0 +1,7 @@
+{
+    "appService.defaultWebAppToDeploy": "/subscriptions/e8e2a05b-7987-4b99-9783-c178408f7258/resourceGroups/fatalencountergp/providers/Microsoft.Web/sites/fatalencounters",
+    "appService.deploySubpath": "dist",
+    "appService.zipIgnorePattern": [
+        ".vscode{,/**}"
+    ]
+}
