@@ -7,9 +7,9 @@ import { Component, OnInit } from '@angular/core';
 })
 export class DashboardComponent implements OnInit {
 
-  public cardTitle: string;
+  public selectedChart: { id: number, title: string };
 
-  private cards = [
+  private charts = [
     { id: 1, title: 'Geo Statistics' },
     { id: 2, title: 'Fatality Numbers' },
     { id: 3, title: 'Gender Stats' },
@@ -18,13 +18,13 @@ export class DashboardComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
-    //load geo stats default
-    this.cardTitle = this.cards[2].title
+    //load gender stats default
+    this.selectedChart = this.charts[2];
   }
 
-  selectVisualization(cardNumber: number) {
-    this.cardTitle = this.cards.find(c => c.id == cardNumber).title
+  selectVisualization(chartId: number) {
+    this.selectedChart = this.charts.find(c => c.id == chartId);
   }
-  
+
 }
 

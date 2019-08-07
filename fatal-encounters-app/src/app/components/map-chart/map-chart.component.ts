@@ -1,8 +1,7 @@
 import { Component, OnInit, NgZone } from '@angular/core';
-import * as am4core from "@amcharts/amcharts4/core";
-import * as am4maps from "@amcharts/amcharts4/maps";
-// import am4geodata_worldLow from "@amcharts/amcharts4-geodata";
+import * as jsonData from "src/app/core/moks/deaths_2019.json";
 
+declare var google: any;
 
 @Component({
   selector: 'app-map-chart',
@@ -10,27 +9,41 @@ import * as am4maps from "@amcharts/amcharts4/maps";
   styleUrls: ['./map-chart.component.css']
 })
 export class MapChartComponent implements OnInit {
-  private chart: any;
   constructor(private zone: NgZone) { }
 
   ngOnInit() {
-  }
-
-  ngAfterViewInit() {
-    this.zone.runOutsideAngular(() => {
-      let map = am4core.create("chartdiv", am4maps.MapChart);
-      // map.geodata = am4geodata_worldLow;
-
-      //todo
-      this.chart = map;
+    google.charts.load('current', {
+      'packages': ['geochart'],
+      'mapsApiKey': 'AIzaSyD-9tSrke72PouQMnMX-a7eZSW0jkFMBWY'
     });
+    google.charts.setOnLoadCallback(this.drawMap);
   }
 
-  ngOnDestroy() {
-    this.zone.runOutsideAngular(() => {
-      if (this.chart) {
-        this.chart.dispose();
-      }
-    });
+
+  drawMap() {
+    var result = [];
+    result.push(['State', 'Deaths']);
+    var jsonArr = jsonData['default'];
+    for (var i in jsonArr){
+      result.push([jsonArr[i]['State'], jsonArr[i]['number']]);
+    }
+      
+    var data = google.visualization.arrayToDataTable(result);
+
+    var options = {
+      region: 'US',
+      displayMode: 'regions',
+      resolution: 'provinces',
+      colorAxis: {colors: ['#282a59', '#a2cbde', '#8db8fc']},
+      backgroundColor: '#ddd',
+      datalessRegionColor: '#fff',
+      defaultColor: '#f5f5f5',
+      legend:  {textStyle: {color: 'black', fontSize: 11}}
+    };
+
+    var chart = new google.visualization.GeoChart(document.getElementById('chart_div'));
+
+    chart.draw(data, options);
   }
+
 }
